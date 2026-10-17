@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="22dp">
+
+        <TextView
+            android:id="@+id/dTitle"
+            style="@style/Display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="26sp" />
+
+        <TextView
+            android:id="@+id/dHint"
+            style="@style/Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="16dp" />
+
+        <EditText
+            android:id="@+id/dName"
+            style="@style/Field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="Name"
+            android:inputType="textCapSentences"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/dText"
+            style="@style/Field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|start"
+            android:hint="System prompt"
+            android:inputType="textMultiLine|textCapSentences"
+            android:maxLines="12"
+            android:minLines="7" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/dReset"
+                style="@style/Btn.Text"
+                android:paddingHorizontal="14dp"
+                android:text="Reset" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/dCancel"
+                style="@style/Btn.Text"
+                android:layout_marginEnd="6dp"
+                android:paddingHorizontal="14dp"
+                android:text="Cancel" />
+
+            <TextView
+                android:id="@+id/dSave"
+                style="@style/Btn.Filled"
+                android:text="Save" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

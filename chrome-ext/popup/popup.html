@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quill</title>
+  <link rel="stylesheet" href="../options/theme.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <img src="../icons/icon48.png" alt="" width="34" height="34">
+    <div>
+      <h1>Quill</h1>
+      <p>Private writing help, powered by Gemma</p>
+    </div>
+  </header>
+
+  <section id="conn" class="conn" data-state="checking">
+    <span class="dot"></span>
+    <div class="conn-text">
+      <b id="connTitle">Checking connection…</b>
+      <span id="connSub"></span>
+    </div>
+    <button id="connFix" class="btn sm" hidden>Fix</button>
+  </section>
+
+  <section class="toggles">
+    <label class="switch-row">
+      <span><b>Quill is on</b><small>Check writing in every text field</small></span>
+      <input type="checkbox" id="enabled" class="switch">
+    </label>
+    <label class="switch-row" id="siteRow" hidden>
+      <span><b>On <span id="siteName">this site</span></b><small>Turn off just here</small></span>
+      <input type="checkbox" id="siteOn" class="switch">
+    </label>
+    <label class="switch-row">
+      <span><b>Style suggestions</b><small>Clarity, engagement and tone</small></span>
+      <input type="checkbox" id="style" class="switch">
+    </label>
+    <label class="switch-row">
+      <span><b>Underline mistakes</b><small>Colored lines under suggestions</small></span>
+      <input type="checkbox" id="underline" class="switch">
+    </label>
+  </section>
+
+  <footer>
+    <span id="stat"></span>
+    <span class="spacer"></span>
+    <button id="shortcuts" class="link">Shortcuts</button>
+    <button id="settings" class="btn primary sm">Settings</button>
+  </footer>
+  <script src="../lib/shared.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

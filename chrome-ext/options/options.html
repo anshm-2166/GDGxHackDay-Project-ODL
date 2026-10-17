@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quill settings</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <div class="brand">
+        <img src="../icons/icon48.png" alt="" width="40" height="40">
+        <div><h1>Quill</h1><p>Settings</p></div>
+      </div>
+      <nav>
+        <a href="#connection" class="on">Connection</a>
+        <a href="#writing">Writing</a>
+        <a href="#prompts">Prompts</a>
+        <a href="#sites">Sites &amp; dictionary</a>
+        <a href="#about">About</a>
+      </nav>
+    </aside>
+
+    <main>
+      <section id="welcome" class="hero" hidden>
+        <h2>Welcome to Quill</h2>
+        <p>Quill checks your writing in every text box using <b>Gemma, running on your own machine</b>. Nothing is sent anywhere else. Connect it below and start typing on any page.</p>
+      </section>
+
+      <!-- ===================================================== connection -->
+      <section id="connection">
+        <h2>Connection</h2>
+        <p class="lead">Where Ollama runs. The default is this computer on Ollama's standard port.</p>
+
+        <div class="card">
+          <label class="field">
+            <span>Ollama address</span>
+            <div class="inline">
+              <input type="text" id="url" spellcheck="false" autocomplete="off" placeholder="http://localhost:11434">
+              <button class="btn" id="resetUrl" title="Use http://localhost:11434">Default</button>
+            </div>
+            <small>Examples: <code>localhost</code>, <code>http://192.168.1.20:11434</code>, <code>https://ollama.example.com</code>. If you leave out the port, <code>11434</code> is used.</small>
+          </label>
+          <div class="row">
+            <button class="btn primary" id="saveTest">Save &amp; test connection</button>
+            <span id="permNote" class="note"></span>
+          </div>
+          <div id="result" class="result" hidden></div>
+        </div>
+
+        <div class="card">
+          <label class="field">
+            <span>Model for checking your writing</span>
+            <div class="inline">
+              <input type="text" id="model" data-key="model" list="models" spellcheck="false" autocomplete="off">
+              <button class="btn" id="refresh" title="Reload installed models">Refresh</button>
+            </div>
+            <small>Used for grammar and style as you type. Small, fast models work best, e.g. <code>gemma4:e4b</code>, <code>llama3.2:3b</code> or <code>qwen2.5:3b</code>.</small>
+          </label>
+          <label class="field">
+            <span>Model for rewrites <em>(optional)</em></span>
+            <input type="text" id="rewriteModel" data-key="rewriteModel" list="models" spellcheck="false" autocomplete="off" placeholder="Same as above">
+            <small>Tone changes, custom instructions and explanations. Use a larger model here for nicer prose.</small>
+          </label>
+          <datalist id="models"></datalist>
+          <div class="grid2">
+            <label class="field">
+              <span>Checking temperature <b class="val" data-for="temperature"></b></span>
+              <input type="range" min="0" max="1" step="0.05" data-key="temperature">
+              <small>Low keeps corrections conservative.</small>
+            </label>
+            <label class="field">
+              <span>Rewrite temperature <b class="val" data-for="rewriteTemperature"></b></span>
+              <input type="range" min="0" max="1.5" step="0.05" data-key="rewriteTemperature">
+              <small>Higher is more creative.</small>
+            </label>
+          </div>
+          <details>
+            <summary>Advanced</summary>
+            <div class="grid3">
+              <label class="field"><span>Keep model loaded</span><input type="text" data-key="keepAlive" placeholder="15m"><small>Ollama duration, e.g. 5m, 1h, -1.</small></label>
+              <label class="field"><span>Timeout (seconds)</span><input type="number" min="10" max="900" data-key="timeoutSec"><small>Per request, while waiting for output.</small></label>
+              <label class="field"><span>Parallel requests</span><input type="number" min="1" max="6" data-key="concurrency"><small>Raise if your server runs several at once.</small></label>
+            </div>
+          </details>
+        </div>
+
+        <div class="card">
+          <h3>About CORS and permissions</h3>
+          <p>Quill talks to Ollama from its background service worker, never from the web page you are on. That avoids mixed-content and page-CSP problems (for example <code>https://</code> sites reaching <code>http://localhost</code>).</p>
+          <p>Ollama refuses browser requests that carry an unfamiliar <code>Origin</code>. Quill removes that header from its own requests to the address above, so <b>you don't need to set <code>OLLAMA_ORIGINS</code></b>. For a non-local address, the browser asks you to allow Quill to reach that one host when you press <i>Save &amp; test</i>.</p>
+          <details>
+            <summary>Still seeing a 403 error?</summary>
+            <p>Allow extension origins on the server, then restart Ollama:</p>
+            <p><b>Windows (PowerShell)</b></p>
+            <pre>setx OLLAMA_ORIGINS "chrome-extension://*"</pre>
+            <p><b>macOS</b></p>
+            <pre>launchctl setenv OLLAMA_ORIGINS "chrome-extension://*"</pre>
+            <p><b>Linux (systemd)</b>: <code>sudo systemctl edit ollama</code> and add</p>
+            <pre>[Service]
+Environment="OLLAMA_ORIGINS=chrome-extension://*"</pre>
+            <p>Reaching Ollama from another machine also needs <code>OLLAMA_HOST=0.0.0.0</code> on the server.</p>
+          </details>
+        </div>
+      </section>
+
+      <!-- ========================================================= writing -->
+      <section id="writing">
+        <h2>Writing</h2>
+        <p class="lead">What Quill looks for, and how it shows up in text boxes.</p>
+
+        <div class="card list">
+          <label class="srow"><span><b>Quill is on</b><small>Master switch for every site.</small></span><input type="checkbox" class="switch" data-key="enabled"></label>
+          <label class="srow"><span><b>Check as you type</b><small>Waits for a short pause. Turn off to check only when you press <i>Check now</i>.</small></span><input type="checkbox" class="switch" data-key="checkAsYouType"></label>
+          <label class="srow"><span><b>Style suggestions</b><small>Clarity, engagement and delivery, on top of grammar. Makes one extra model call per check.</small></span><input type="checkbox" class="switch" data-key="style"></label>
+          <label class="srow"><span><b>Underline suggestions</b><small>Colored lines under the words Quill would change.</small></span><input type="checkbox" class="switch" data-key="underline"></label>
+          <label class="srow"><span><b>Quill button in text boxes</b><small>The round badge with your suggestion count.</small></span><input type="checkbox" class="switch" data-key="badge"></label>
+          <label class="srow"><span><b>Check search boxes</b><small>Also check Google-style search and prompt fields.</small></span><input type="checkbox" class="switch" data-key="searchBoxes"></label>
+          <label class="srow"><span><b>Selection toolbar</b><small>Quick Fix, Formal, Friendly and more when you select text.</small></span><input type="checkbox" class="switch" data-key="selectionBar"></label>
+        </div>
+
+        <div class="card">
+          <h3>Suggestion types</h3>
+          <div class="cats">
+            <label class="cat" style="--c:var(--red)"><input type="checkbox" data-cat="correctness"><span class="dot"></span><b>Correctness</b><small>Spelling, grammar, punctuation</small></label>
+            <label class="cat" style="--c:var(--blue)"><input type="checkbox" data-cat="clarity"><span class="dot"></span><b>Clarity</b><small>Wordiness, confusing phrasing</small></label>
+            <label class="cat" style="--c:var(--green)"><input type="checkbox" data-cat="engagement"><span class="dot"></span><b>Engagement</b><small>Stronger word choice</small></label>
+            <label class="cat" style="--c:var(--purple)"><input type="checkbox" data-cat="delivery"><span class="dot"></span><b>Delivery</b><small>Tone, confidence, politeness</small></label>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="grid3">
+            <label class="field"><span>Pause before checking <b class="val" data-for="delayMs" data-unit="ms"></b></span><input type="range" min="300" max="3000" step="100" data-key="delayMs"><small>Shorter feels faster, longer is gentler on your GPU.</small></label>
+            <label class="field"><span>Longest text checked <b class="val" data-for="maxChars" data-unit=" chars"></b></span><input type="range" min="1000" max="40000" step="1000" data-key="maxChars"><small>Longer texts are checked up to this point.</small></label>
+            <label class="field"><span>Theme</span>
+              <select data-key="theme"><option value="auto">Match system</option><option value="light">Light</option><option value="dark">Dark</option></select>
+              <small>For Quill's panel and cards.</small></label>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Keyboard shortcuts</h3>
+          <p class="shortcuts"><kbd>Alt</kbd> + <kbd>Q</kbd> open or close the Quill panel &nbsp;&middot;&nbsp; <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>A</kbd> accept all suggestions &nbsp;&middot;&nbsp; <kbd>Esc</kbd> close</p>
+          <p class="note">Right-click inside a text box for <i>Rewrite with Quill</i>.</p>
+          <button class="btn sm" id="shortcuts">Change shortcuts</button>
+        </div>
+      </section>
+
+      <!-- ========================================================= prompts -->
+      <section id="prompts">
+        <h2>Prompts</h2>
+        <p class="lead">Every instruction Quill sends to the model. Edit them freely, or add your own rewrite styles.</p>
+
+        <div class="card">
+          <h3>Rewrite styles</h3>
+          <p class="note">Each style appears as a chip in the Rewrite tab and in the right-click menu. <b>Fix all</b> also drives the grammar underlines.</p>
+          <div id="toolList"></div>
+          <div class="add">
+            <h3>Add a style</h3>
+            <div class="grid2">
+              <input type="text" id="newName" placeholder="Name, e.g. Tweet" maxlength="24">
+              <input type="text" id="newPrompt" placeholder="Instruction, e.g. Rewrite as a punchy tweet">
+            </div>
+            <button class="btn sm" id="addTool">Add style</button>
+            <span class="note" id="addNote"></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Style suggestions prompt</h3>
+          <p class="note">Asks for clarity, engagement and delivery ideas as JSON: <code>category</code>, <code>label</code>, <code>original</code>, <code>replacement</code>.</p>
+          <textarea id="stylePrompt" rows="8" spellcheck="false"></textarea>
+          <button class="btn sm" id="resetStyle">Reset to default</button>
+        </div>
+      </section>
+
+      <!-- ============================================== sites + dictionary -->
+      <section id="sites">
+        <h2>Sites &amp; dictionary</h2>
+        <p class="lead">Places Quill stays quiet, and words it should never flag.</p>
+
+        <div class="card">
+          <h3>Turned off on these sites</h3>
+          <p class="note">Includes subdomains. You can also switch a site off from the Quill toolbar popup.</p>
+          <div class="inline"><input type="text" id="siteInput" placeholder="example.com" spellcheck="false"><button class="btn" id="addSite">Add</button></div>
+          <div id="siteList" class="tags"></div>
+        </div>
+
+        <div class="card">
+          <h3>Personal dictionary</h3>
+          <p class="note">Names, jargon and slang. Add words from the suggestion card with <i>Add to dictionary</i>.</p>
+          <div class="inline"><input type="text" id="wordInput" placeholder="Word" spellcheck="false"><button class="btn" id="addWord">Add</button></div>
+          <div id="wordList" class="tags"></div>
+        </div>
+      </section>
+
+      <!-- =========================================================== about -->
+      <section id="about">
+        <h2>About</h2>
+        <div class="card">
+          <p><b>Quill <span id="ver"></span></b> Grammarly-style writing help that stays on your machine.</p>
+          <p class="note"><span id="accepted">0</span> suggestions accepted so far. Text is only ever sent to the Ollama address above, and never from password, search, email or credit-card fields. Add <code>data-quill="off"</code> to any field to opt it out.</p>
+          <div class="row">
+            <button class="btn sm" id="export">Export settings</button>
+            <label class="btn sm" for="import">Import settings</label><input type="file" id="import" accept="application/json" hidden>
+            <button class="btn sm danger" id="reset">Reset everything</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div id="toast" class="toast" hidden></div>
+  <script src="../lib/shared.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

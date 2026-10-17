@@ -1,0 +1,26 @@
+body { width: 340px; }
+header { display: flex; gap: 12px; align-items: center; padding: 16px 16px 12px; }
+header img { border-radius: 9px; }
+header h1 { font-size: 22px; line-height: 1.1; color: var(--brand); }
+header p { margin: 1px 0 0; color: var(--muted); font-size: 12px; }
+
+.conn { margin: 0 12px; padding: 11px 12px; display: flex; gap: 11px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+.conn .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); flex: none; }
+.conn[data-state=ok] .dot { background: var(--green); box-shadow: 0 0 0 4px color-mix(in srgb, var(--green) 22%, transparent); }
+.conn[data-state=bad] .dot { background: var(--red); box-shadow: 0 0 0 4px color-mix(in srgb, var(--red) 22%, transparent); }
+.conn[data-state=checking] .dot { animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .3; } }
+.conn-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.conn-text b { font-size: 13.5px; }
+.conn-text span { color: var(--muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.toggles { margin: 10px 12px 0; background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); }
+.switch-row { display: flex; align-items: center; gap: 12px; padding: 10px 14px; cursor: pointer; }
+.switch-row + .switch-row { border-top: 1px solid var(--line); }
+.switch-row[hidden] { display: none; }
+.switch-row span { flex: 1; min-width: 0; }
+.switch-row b { display: block; font-size: 13.5px; }
+.switch-row small { color: var(--muted); font-size: 12px; }
+
+footer { display: flex; align-items: center; gap: 8px; padding: 12px 14px 14px; }
+#stat { color: var(--muted); font-size: 12px; }

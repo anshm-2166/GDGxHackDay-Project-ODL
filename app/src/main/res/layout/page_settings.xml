@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:overScrollMode="never">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="28dp">
+
+        <TextView
+            style="@style/Eyebrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Make it yours" />
+
+        <TextView
+            style="@style/Display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="20dp"
+            android:text="Settings" />
+
+        <!-- Brain -->
+        <LinearLayout style="@style/Card">
+
+            <TextView
+                style="@style/Heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Where Quill thinks" />
+
+            <TextView
+                style="@style/Body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="12dp"
+                android:text="Run Gemma 4 on this phone, or use your own Ollama server." />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_field"
+                android:orientation="horizontal"
+                android:padding="4dp">
+
+                <TextView
+                    android:id="@+id/engOllama"
+                    style="@style/Btn"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:text="Ollama server" />
+
+                <TextView
+                    android:id="@+id/engDevice"
+                    style="@style/Btn"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:text="On this phone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/devicePanel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/devStatus"
+                    style="@style/Heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/devDetail"
+                    style="@style/Body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textSize="13sp" />
+
+                <ProgressBar
+                    android:id="@+id/devProgress"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:layout_marginTop="12dp"
+                    android:max="1000"
+                    android:progressDrawable="@drawable/seek_track"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/devPrimary"
+                        style="@style/Btn.Filled"
+                        android:paddingHorizontal="18dp" />
+
+                    <TextView
+                        android:id="@+id/devImport"
+                        style="@style/Btn.Tonal"
+                        android:layout_marginStart="8dp"
+                        android:paddingHorizontal="16dp"
+                        android:text="Import file" />
+
+                    <TextView
+                        android:id="@+id/devDelete"
+                        style="@style/Btn.Text"
+                        android:paddingHorizontal="12dp"
+                        android:text="Delete" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/Eyebrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Accelerator" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_field"
+                    android:orientation="horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:id="@+id/accGpu"
+                        style="@style/Btn"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="GPU" />
+
+                    <TextView
+                        android:id="@+id/accCpu"
+                        style="@style/Btn"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="CPU" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/accNote"
+                    style="@style/Body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="GPU is fastest. Quill falls back to CPU by itself if the GPU can't load the model."
+                    android:textSize="12.5sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Server -->
+        <LinearLayout
+            android:id="@+id/serverCard"
+            style="@style/Card">
+
+            <TextView
+                style="@style/Heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ollama server" />
+
+            <TextView
+                style="@style/Body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="12dp"
+                android:text="Emulator: http://10.0.2.2:11434. Phone on Wi-Fi: your PC's IP." />
+
+            <EditText
+                android:id="@+id/url"
+                style="@style/Field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="http://10.0.2.2:11434"
+                android:inputType="textUri"
+                android:singleLine="true" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/test"
+                    style="@style/Btn.Tonal"
+                    android:text="Test connection" />
+
+                <ImageView
+                    android:id="@+id/statusIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="14dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_server"
+                    app:tint="@color/text_secondary" />
+
+                <TextView
+                    android:id="@+id/status"
+                    style="@style/Body"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:text="Not tested yet"
+                    android:textSize="13sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Models -->
+        <LinearLayout style="@style/Card">
+
+            <TextView
+                style="@style/Heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Models" />
+
+            <TextView
+                style="@style/Body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="14dp"
+                android:text="Type any model name, or pick one installed on your server." />
+
+            <TextView
+                style="@style/Eyebrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="Writing (Scribe, keyboard, assistant)" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/model"
+                    style="@style/Field"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="gemma4:e4b"
+                    android:inputType="textUri"
+                    android:singleLine="true" />
+
+                <TextView
+                    android:id="@+id/pickModel"
+                    style="@style/Btn.Tonal"
+                    android:layout_marginStart="8dp"
+                    android:paddingHorizontal="16dp"
+                    android:text="Browse" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/Body"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Creativity" />
+
+                <TextView
+                    android:id="@+id/tempValue"
+                    style="@style/Heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/temp"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:max="15"
+                android:maxHeight="4dp"
+                android:minHeight="4dp"
+                android:paddingHorizontal="12dp"
+                android:progressDrawable="@drawable/seek_track"
+                android:thumb="@drawable/seek_thumb" />
+
+            <TextView
+                style="@style/Eyebrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="6dp"
+                android:text="Chat" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/chatModelField"
+                    style="@style/Field"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Same as writing model"
+                    android:inputType="textUri"
+                    android:singleLine="true" />
+
+                <TextView
+                    android:id="@+id/pickChatModel"
+                    style="@style/Btn.Tonal"
+                    android:layout_marginStart="8dp"
+                    android:paddingHorizontal="16dp"
+                    android:text="Browse" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/Body"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Creativity" />
+
+                <TextView
+                    android:id="@+id/chatTempValue"
+                    style="@style/Heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/chatTemp"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:max="15"
+                android:maxHeight="4dp"
+                android:minHeight="4dp"
+                android:paddingHorizontal="12dp"
+                android:progressDrawable="@drawable/seek_track"
+                android:thumb="@drawable/seek_thumb" />
+        </LinearLayout>
+
+        <!-- Prompts -->
+        <LinearLayout style="@style/Card">
+
+            <TextView
+                style="@style/Heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="System prompts" />
+
+            <TextView
+                style="@style/Body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="6dp"
+                android:text="Tap any prompt to edit it. Add your own Scribe tools too." />
+
+            <LinearLayout
+                android:id="@+id/promptList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <TextView
+                android:id="@+id/addTool"
+                style="@style/Btn.Tonal"
+                android:layout_marginTop="10dp"
+                android:text="Add a Scribe tool" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/Body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Quill 1.0 · private by design"
+            android:textSize="12sp" />
+    </LinearLayout>
+</ScrollView>

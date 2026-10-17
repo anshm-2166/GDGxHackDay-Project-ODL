@@ -1,0 +1,24 @@
+[versions]
+agp = "9.4.1"
+coreKtx = "1.19.1"
+junit = "4.13.2"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
+appcompat = "1.8.0"
+activityKtx = "1.13.0"
+constraintlayout = "2.2.2"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+orgjson = { group = "org.json", name = "json", version = "20240303" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version = "1.4.0" }
+litertlm = { group = "com.google.ai.edge.litertlm", name = "litertlm-android", version = "0.18.0" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+
