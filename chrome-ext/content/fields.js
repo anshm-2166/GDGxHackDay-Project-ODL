@@ -13,8 +13,11 @@
 
   const CODE_EDITORS = '.monaco-editor,.CodeMirror,.cm-editor,.ace_editor,.xterm,.jsoneditor,.view-lines';
   const OPT_OUT = '[data-quill="off"],[data-gramm="false"],[data-gramm_editor="false"],[data-enable-grammarly="false"]';
-  const SKIP_NAME = /search|query|zip|postal|phone|otp|captcha|user(name)?\b|login|e-?mail|pass(word|code)?|card|cvv|iban|\burl\b|coupon|promo/i;
-  const SKIP_AUTOCOMPLETE = /^(cc-|one-time|current-password|new-password|username|email|tel|postal|street|address|name|given|family|bday|url)/;
+  // Only genuinely sensitive inputs are skipped; short values (names, emails) never reach the model anyway
+  // because a check needs at least two words.
+  const SENSITIVE = /pass(word|code|wd)|otp|one-?time|2fa|cvv|cvc|card-?(number|num)|cc-?(num|number|exp|csc)|captcha|iban|\bssn\b/i;
+  const SENSITIVE_AUTOCOMPLETE = /^(cc-|one-time-code|current-password|new-password)/;
+  const TEXT_TYPES = new Set(['text', 'search', 'email', 'url']);
 
   /** The editable element a focus / input event belongs to, or null. */
   Q.editableFor = function (t) {
@@ -32,21 +35,18 @@
   Q.eligible = function (el) {
     if (!el || !el.isConnected) return false;
     if (el.closest(OPT_OUT) || el.closest(CODE_EDITORS)) return false;
-    const role = (el.getAttribute('role') || '').toLowerCase();
-    if (!Q.allowSearch && (role === 'combobox' || role === 'searchbox')) return false;
     if (el instanceof HTMLInputElement) {
       const type = (el.getAttribute('type') || 'text').toLowerCase();
-      if (type !== 'text' && !(Q.allowSearch && type === 'search')) return false;
-      if (el.readOnly || el.disabled || el.spellcheck === false) return false;
-      if (SKIP_AUTOCOMPLETE.test((el.getAttribute('autocomplete') || '').toLowerCase())) return false;
-      if (/^(numeric|decimal|tel|email|url)$/.test(el.inputMode)) return false;
-      const hint = [el.name, el.id, el.placeholder, el.getAttribute('aria-label')].join(' ');
-      if (SKIP_NAME.test(Q.allowSearch ? hint.replace(/search|query/gi, '') : hint)) return false;
+      if (!TEXT_TYPES.has(type)) return false; // password, number, tel, date, file ...
+      if (el.readOnly || el.disabled) return false;
+      if (SENSITIVE_AUTOCOMPLETE.test((el.getAttribute('autocomplete') || '').toLowerCase())) return false;
+      if (/^(numeric|decimal|tel)$/.test(el.inputMode)) return false;
+      if (SENSITIVE.test([el.name, el.id, el.getAttribute('aria-label')].join(' '))) return false;
     } else if (el instanceof HTMLTextAreaElement) {
       if (el.readOnly || el.disabled) return false;
     } else if (!el.isContentEditable) return false;
     const r = el.getBoundingClientRect();
-    return el instanceof HTMLInputElement ? r.width >= 100 && r.height >= 22 : r.width >= 60 && r.height >= 20;
+    return el instanceof HTMLInputElement ? r.width >= 60 && r.height >= 18 : r.width >= 40 && r.height >= 16;
   };
 
   // ------------------------------------------------------ contenteditable text

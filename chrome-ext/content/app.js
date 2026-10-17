@@ -88,7 +88,6 @@
     S = await Q.getSettings();
     dictSet = new Set(S.dictionary.map((w) => String(w).toLowerCase()));
     sig = h32([S.model, S.temperature, Q.toolPrompt(S, Q.FIX), Q.stylePrompt(S)].join('|'));
-    Q.allowSearch = S.searchBoxes !== false;
     paused = !S.enabled || Q.siteDisabled(S, location.hostname);
     if (view) view.setSettings(S, info());
   }
@@ -188,20 +187,32 @@
 
   const origin = (e) => (e.composedPath ? e.composedPath()[0] : e.target);
 
-  document.addEventListener(
-    'focusin',
-    (e) => {
-      if (dead) return;
-      if (Q.orphaned()) return teardown();
-      if (paused) return;
-      const el = Q.editableFor(origin(e));
-      if (!el) return;
-      if (view && view.host === e.target) return; // focus moved into Quill's own panel
-      if (Q.eligible(el)) activate(el);
-      else if (active && active.field.el !== el) deactivate();
-    },
-    true,
-  );
+  /**
+   * Makes the field an event came from the active one. Focus alone is not enough: autofocused boxes,
+   * script-driven focus and some editors never fire a usable focusin, but a click, key or input always will.
+   */
+  function adopt(e, leave) {
+    if (dead) return null;
+    if (Q.orphaned()) return void teardown();
+    if (paused) return null;
+    const path = e.composedPath ? e.composedPath() : [e.target];
+    if (view && view.owns(path)) return null; // events inside Quill's own panel
+    let el = null;
+    for (const n of path) {
+      if ((el = Q.editableFor(n))) break;
+    }
+    if (!el) return null;
+    if (Q.eligible(el)) {
+      activate(el);
+      return el;
+    }
+    if (leave && active && active.field.el !== el) deactivate();
+    return null;
+  }
+
+  document.addEventListener('focusin', (e) => adopt(e, true), true);
+  document.addEventListener('pointerdown', (e) => adopt(e, false), true);
+  document.addEventListener('keydown', (e) => e.key.length === 1 && adopt(e, false), true);
 
   document.addEventListener(
     'focusout',
@@ -257,9 +268,9 @@
   document.addEventListener(
     'input',
     (e) => {
-      if (dead || !active) return;
-      const el = Q.editableFor(origin(e));
-      if (el === active.field.el) textMaybeChanged(active);
+      if (dead) return;
+      const el = adopt(e, false);
+      if (el && active && el === active.field.el) textMaybeChanged(active);
     },
     true,
   );

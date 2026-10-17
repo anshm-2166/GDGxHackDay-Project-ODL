@@ -30,7 +30,6 @@
     underline: true,
     badge: true,
     selectionBar: true,
-    searchBoxes: true,
     theme: 'auto',
     maxChars: 12000,
 
